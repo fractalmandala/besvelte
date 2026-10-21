@@ -1,3 +1,3 @@
-export function cx(...parts: Array<string | false | undefined | null>): string {
+export function cx(...parts: Array<unknown>): string {
   return parts.filter(Boolean).join(" ")
 }

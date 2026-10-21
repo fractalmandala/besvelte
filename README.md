@@ -1,56 +1,28 @@
-# Geckobox
+# Besvelte
 
-<sub>The command-line tool and SDK are called `openspaces`.</sub>
+A Svelte implementation of bots in the app. Claude, Codex, Opencode, others - create bots, run jobs across virtual computers. Choose sandboxes on local drive, an SSH box like Tailscale, Docker, or Cua sandboxes. 
 
-Put Claude Code, Codex or any coding agent on a computer you choose, and run jobs across all your computers at once. **Free, with no limits.**
+## Features
+1. Set agent personalities and assign them computers.
+2. Local MacOS sandbox computers, SSH machines, Docker, Cua, as options.
+3. View agent live next to the chat panels.
+4. Intervent in agent computers anytime.
+5. Run multiple tasks on multiple computers.
 
-The "bring your own computer" idea from [Cua Spaces](https://x.com/trycua/status/2112228154651881479), without the meter:
-
-- **Live sessions:** Cua Free 2, Pro 5. Geckobox: unlimited.
-- **Remote hours a month:** Cua Free 20, Pro 200. Geckobox: unlimited.
-- **Account:** Cua needs one for remote use. Geckobox needs none.
-- **Licence:** Cua is FSL-1.1. Geckobox is MIT.
-
-Cua meters its relay. openspaces has no relay: it reaches your computers directly. They can be sandboxes it creates on your own machine, any box over SSH ([Tailscale](https://tailscale.com) handles NAT), Docker, or a Cua sandbox. With no middleman there is nothing to meter. It is an independent clean-room implementation, not affiliated with Cua; none of its code comes from Cua.
-
-![openspaces dashboard: a Claude Code thread on this Mac](docs/thread.jpg)
-
-## Quick tour
-
-**1. Say what to do, pick the computer, agent and model.**
-
-![Starting a task: pick the computer, agent and model](docs/tutorial/start-a-task.gif)
-
-**2. Add computers: sandboxes on your Mac in ~20 s, or any machine over SSH, Docker or Cua.**
-
-![Computers](docs/tutorial/02-computers.jpg)
-
-**3. Watch the agent work live, next to the chat.**
-
-![An agent searching Wikipedia on its own computer, live](docs/tutorial/agent-live.gif)
-
-**4. Take over anytime: click, scroll and type into its computer, or record it.**
-
-![Taking over and scrolling the agent's browser](docs/tutorial/take-over.gif)
-
-**5. Run one job on every computer at once.**
-
-![Run everywhere](docs/tutorial/05-run-everywhere.jpg)
-
-**➜ Full step-by-step guide: [docs/TUTORIAL.md](docs/TUTORIAL.md)**
-
-## The app
+## Dev
 
 ```sh
-# Run development with a single command (backend + SvelteKit dev server + auto-auth):
 npm run dev
 
-# Or run the built production UI:
+# to run in browser instead of native desktop window:
+npm run dev:browser
+
+# production build:
 npm run build
 node dist/cli.js ui
 ```
 
-A local dashboard opens in your browser: dark, green, rounded and calm, inspired by Grok Bot's layout (bots on the left, the conversation in the middle, the bot's computer live on the right).
+A local dashboard opens in a dedicated native desktop window: dark, green, rounded and calm, inspired by Grok Bot's layout (bots on the left, the conversation in the middle, the bot's computer live on the right).
 
 - **New thread:** pick an agent and a computer, say what to do, and it runs in the background.
 - **Threads:** a chat with each agent beside a **live view of its computer**. You see the screen, the agent's cursor gliding and a ripple wherever it clicks, at about 3 fps, all inside the app. **Take over** goes full screen and sends your clicks, scrolls and typing to that computer. Pause hands control back and forth.

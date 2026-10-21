@@ -10,13 +10,21 @@
   },
   "dependencies": {
     "@fontsource-variable/nunito": "^5.3.0",
-    "@lucide/svelte": "^1.61.0"
+    "@lucide/svelte": "^1.61.0",
+    "face-api.js": "^0.22.2",
+    "gsap": "^3.15.0",
+    "ogl": "^1.0.11",
+    "postprocessing": "^6.39.5",
+    "three": "^0.186.1"
   },
   "devDependencies": {
+    "@fractaldesign/fractalstyler": "^1.4.0",
+    "@inlang/paraglide-js": "^2.18.2",
     "@sveltejs/adapter-static": "^3.0.8",
     "@sveltejs/kit": "^2.16.1",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@tailwindcss/vite": "^4.0.0",
+    "@types/three": "^0.186.0",
     "svelte": "^5.19.0",
     "svelte-check": "^4.1.4",
     "tailwindcss": "^4.0.0",

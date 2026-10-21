@@ -1,0 +1,7 @@
+{
+  "$schema": "https://inlang.com/assets/project.inlang/service-schema.json",
+  "welcome": "மீண்டும் வருக, {name}!",
+  "nav_home": "முகப்பு",
+  "nav_settings": "அமைப்புகள்",
+  "logout": "வெளியேறு"
+}

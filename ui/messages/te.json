@@ -1,0 +1,7 @@
+{
+  "$schema": "https://inlang.com/assets/project.inlang/service-schema.json",
+  "welcome": "తిరిగి స్వాగతం, {name}!",
+  "nav_home": "హోమ్",
+  "nav_settings": "సెట్టింగ్‌లు",
+  "logout": "లాగ్ అవుట్"
+}

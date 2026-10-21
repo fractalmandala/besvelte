@@ -1,0 +1,7 @@
+{
+  "$schema": "https://inlang.com/assets/project.inlang/service-schema.json",
+  "welcome": "Welcome back, {name}!",
+  "nav_home": "Home",
+  "nav_settings": "Settings",
+  "logout": "Log Out"
+}

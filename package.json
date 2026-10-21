@@ -1,5 +1,5 @@
 {
-  "name": "openspaces",
+  "name": "besvelte",
   "version": "0.1.0",
   "description": "Put Claude Code, Codex or any coding agent on a computer you choose, and run jobs across all your computers at once. MIT.",
   "license": "MIT",
@@ -25,13 +25,15 @@
   },
   "scripts": {
     "dev": "npm --prefix ui run dev",
+    "dev:desktop": "npm --prefix ui run dev",
+    "dev:browser": "NO_DESKTOP=1 npm --prefix ui run dev",
     "build": "tsc -p tsconfig.build.json && npm run build:ui",
     "build:backend": "tsc -p tsconfig.build.json",
     "prepare": "npm run build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "build:ui": "npm --prefix ui ci --no-audit --no-fund && npm --prefix ui run build",
+    "build:ui": "npm --prefix ui run build",
     "dev:ui": "npm --prefix ui run dev"
   },
   "keywords": [
@@ -45,11 +47,15 @@
     "computer"
   ],
   "dependencies": {
+    "ogl": "^1.0.11",
+    "three": "^0.186.1",
     "zod": "^4.1.0"
   },
   "devDependencies": {
+    "@fractaldesign/fractalstyler": "^1.4.0",
     "@types/node": "^24.0.0",
     "@vitest/coverage-v8": "^4.0.0",
+    "sass": "^1.105.2",
     "typescript": "^5.9.0",
     "vitest": "^4.0.0"
   }

@@ -1,0 +1,6 @@
+{
+  "$schema": "https://inlang.com/assets/project.inlang/service-schema.json",
+  "welcome": "স্বাগতম, {name}!",
+  "nav_home": "হোম",
+  "nav_settings": "সেটিংস"
+}

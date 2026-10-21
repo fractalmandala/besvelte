@@ -7,7 +7,9 @@
   import ThreadView from "$lib/components/ThreadView.svelte"
   import Computers from "$lib/components/Computers.svelte"
   import Everywhere from "$lib/components/Everywhere.svelte"
-  import Logo from "$lib/components/Logo.svelte"
+  import Logo from "$lib/icons/besvelte-w.svelte"
+  import BackgroundHost from "$lib/components/BackgroundHost.svelte"
+  import BackgroundController from "$lib/components/BackgroundController.svelte"
 
   let token = $state<string | undefined>(readToken())
   setToken(token)
@@ -71,7 +73,9 @@
 {#if hasNoToken}
   <div class="grid h-full place-items-center px-6">
     <div class="max-w-sm text-center">
-      <div class="flex justify-center"><Logo /></div>
+      <div class="flex justify-center">
+				<Logo/>
+			</div>
       <KeyRound class="mx-auto mt-8 size-6 text-accent" />
       <h1 class="mt-3 text-[18px] font-semibold">Open the link from your terminal</h1>
       <p class="mt-2 text-[13.5px] leading-relaxed text-dim">
@@ -80,27 +84,33 @@
     </div>
   </div>
 {:else}
-  <div class="flex h-full gap-2.5 overflow-hidden p-2.5">
-    <Sidebar {view} onView={(v) => (view = v)} threads={threads.data} computers={computers.data} />
-    <main class="flex min-w-0 flex-1 gap-2.5">
-      {#if view.kind === "new"}
-        <NewThread
-          agents={agents.data}
-          computers={computers.data}
-          onStarted={(t) => {
-            changed()
-            view = { kind: "thread", id: t.id }
-          }}
-        />
-      {:else if view.kind === "thread"}
-        {#key view.id}
-          <ThreadView id={view.id} onChanged={changed} />
-        {/key}
-      {:else if view.kind === "computers"}
-        <Computers computers={computers.data} onChanged={() => void computers.refresh()} />
-      {:else if view.kind === "everywhere"}
-        <Everywhere computers={computers.data} onOpen={(id) => (view = { kind: "thread", id })} />
-      {/if}
-    </main>
-  </div>
+	<div class="new-app-shell">
+		<aside class="sidebar-solo br">
+			<Sidebar {view} onView={(v) => (view = v)} threads={threads.data} computers={computers.data} />
+		</aside>
+		<main class="main-solo grow relative overflow-hidden flex flex-col min-w-0 min-h-0">
+			<BackgroundHost />
+			<div class="relative z-10 flex-1 min-h-0 min-w-0 flex flex-col">
+				{#if view.kind === "new"}
+					<NewThread
+						agents={agents.data}
+						computers={computers.data}
+						onStarted={(t) => {
+							changed()
+							view = { kind: "thread", id: t.id }
+						}}
+					/>
+				{:else if view.kind === "thread"}
+					{#key view.id}
+						<ThreadView id={view.id} onChanged={changed} />
+					{/key}
+				{:else if view.kind === "computers"}
+					<Computers computers={computers.data} onChanged={() => void computers.refresh()} />
+				{:else if view.kind === "everywhere"}
+					<Everywhere computers={computers.data} onOpen={(id) => (view = { kind: "thread", id })} />
+				{/if}
+			</div>
+			<BackgroundController />
+		</main>
+	</div>
 {/if}

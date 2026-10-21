@@ -1,0 +1,1 @@
+<img class="logotype" src="./besvelte-white.png" alt="besvelte"/>

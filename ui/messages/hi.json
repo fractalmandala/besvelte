@@ -1,0 +1,7 @@
+{
+  "$schema": "https://inlang.com/assets/project.inlang/service-schema.json",
+  "welcome": "वापसी पर स्वागत है, {name}!",
+  "nav_home": "मुख्य पृष्ठ",
+  "nav_settings": "सेटिंग्स",
+  "logout": "लॉग आउट"
+}

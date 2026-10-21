@@ -1,0 +1,7 @@
+{
+  "$schema": "https://inlang.com/assets/project.inlang/service-schema.json",
+  "welcome": "पुन्हा स्वागत आहे, {name}!",
+  "nav_home": "मुख्यपृष्ठ",
+  "nav_settings": "सेटिंग्ज",
+  "logout": "बाहेर पडा"
+}

@@ -8,4 +8,6 @@ declare global {
   }
 }
 
+declare module 'three/examples/jsm/*';
+
 export {};

@@ -43,7 +43,7 @@
   let computerList = $derived(computers ?? [{ name: "local", address: "local", kind: "local" as const }])
 </script>
 
-<div class="panel relative flex h-full min-w-0 flex-1 flex-col overflow-y-auto">
+<div class="box relative min0 hfull overflow-y">
   <div class="grid-bg pointer-events-none absolute inset-x-0 top-0 h-[360px]"></div>
   <div class="relative mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center px-6 py-16">
     <h1 class="mb-6 text-center text-[30px] font-semibold tracking-tight">
