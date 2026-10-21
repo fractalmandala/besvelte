@@ -42,8 +42,12 @@ Cua meters its relay. openspaces has no relay: it reaches your computers directl
 ## The app
 
 ```sh
-npm install -g github:migasrias2/geckobox
-openspaces ui
+# Run development with a single command (backend + SvelteKit dev server + auto-auth):
+npm run dev
+
+# Or run the built production UI:
+npm run build
+node dist/cli.js ui
 ```
 
 A local dashboard opens in your browser: dark, green, rounded and calm, inspired by Grok Bot's layout (bots on the left, the conversation in the middle, the bot's computer live on the right).
@@ -184,8 +188,9 @@ Thread methods: `wait()`, `send(prompt)`, `status()`, `interrupt()` (stops the t
 
 ```sh
 npm install
+npm run dev         # one command: starts backend + SvelteKit dev server with HMR & auto-auth
 npm test            # unit, in-process threads, the HTTP API, and the built CLI end to end
-npm run dev:ui      # UI with hot reload (proxying to `openspaces ui --port 4600`)
+npm run build       # builds backend & SvelteKit UI into dist/
 npm run typecheck
 ```
 
