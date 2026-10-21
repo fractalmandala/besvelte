@@ -69,10 +69,19 @@ export function readToken(): string | undefined {
       history.replaceState(null, "", window.location.pathname)
       return match[1]
     }
-    return sessionStorage.getItem(TOKEN_KEY) ?? undefined
+    const stored = sessionStorage.getItem(TOKEN_KEY)
+    if (stored) return stored
   } catch {
-    return match?.[1]
+    if (match?.[1]) return match[1]
   }
+  if (typeof window !== "undefined" && (window as unknown as { __DEV_TOKEN__?: string }).__DEV_TOKEN__) {
+    const devToken = (window as unknown as { __DEV_TOKEN__?: string }).__DEV_TOKEN__
+    try {
+      sessionStorage.setItem(TOKEN_KEY, devToken!)
+    } catch {}
+    return devToken
+  }
+  return undefined
 }
 
 export class ApiError extends Error {

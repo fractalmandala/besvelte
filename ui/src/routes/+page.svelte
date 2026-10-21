@@ -12,6 +12,26 @@
   let token = $state<string | undefined>(readToken())
   setToken(token)
 
+  $effect(() => {
+    if (!token && import.meta.env.DEV) {
+      fetch("/api/dev-token")
+        .then((r) => r.json())
+        .then((data) => {
+          if (data.token) {
+            token = data.token
+            setToken(data.token)
+            try {
+              sessionStorage.setItem("openspaces.token", data.token)
+            } catch {}
+            void threads.refresh()
+            void computers.refresh()
+            void agents.refresh()
+          }
+        })
+        .catch(() => {})
+    }
+  })
+
   let view = $state<View>({ kind: "new" })
   let threads = createPoll(api.threads, 1500)
   let computers = createPoll(api.computers, 10_000)
