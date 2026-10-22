@@ -1,11 +1,55 @@
+@use 'tokens' as *
+
 .new-app-shell
 	height: 100vh
 	width: 100%
 	display: flex
 	flex-direction: row
-	.sidebar-solo
-		width: 320px
-		background: var(--bg-surface)
+	overflow: hidden
+	background: var(--bg)
+	padding: 0
+
+.sidebar-solo
+	width: 320px
+	position: sticky
+	top: 0
+	left: 0
+	z-index: 10
+	background: color-mix(in srgb, var(--bg-surface) calc(var(--sidebar-opacity, 0.82) * 100%), transparent)
+	backdrop-filter: blur(16px)
+	-webkit-backdrop-filter: blur(16px)
+	transition: background 0.15s ease
+	height: 100vh
+	overflow-y: scroll
+	padding: 0
+	padding-block: 0
+	.sidebar-solo-child
+		height: 100%
+
+.sidebar-solo-header
+	height: var(--header-height)
+	padding-left: 72px
 
 .main-solo
-	background: var(--bg)
+	background: transparent
+	position: relative
+	z-index: 10
+
+.shader-menu
+	z-index: 700
+	position: absolute
+	top: 1rem
+	right: 1rem
+	color: var(--text-secondary)
+	cursor: pointer
+	padding: 0
+	background: none
+	svg
+		opacity: 0.65
+	&:hover
+		color: var(--text-primary)
+		svg
+			opacity: 1
+
+.mt-auto
+	margin-top: auto

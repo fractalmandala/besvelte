@@ -1,0 +1,107 @@
+// Eyeballs out · 1.4s loop
+@use "../base"
+
+.bot-avatar[data-mood="bulge"]
+	.b-rig
+		animation: bulgeBot 1.4s ease-in-out infinite
+	.b-face
+		animation: bulgeFace 1.4s linear infinite
+	.b-eye
+		animation: bulgeEye 1.4s ease-in-out infinite
+	.b-m-smile
+		animation: bulgeSmile 1.4s ease-in-out infinite
+	.b-m-open
+		animation: bulgeOpen 1.4s ease-in-out infinite
+
+@keyframes bulgeBot
+	0%, 100%
+		transform: translateY(0) scale(1, 1)
+	8%
+		transform: translateY(-50px) scale(0.95, 1.1)
+	14%
+		transform: translateY(0) scale(1.05, 0.95)
+	22%, 80%
+		transform: translateY(0) scale(1, 1)
+
+@keyframes bulgeFace
+	0%, 14%
+		transform: translate(0, 0)
+	16%
+		transform: translate(6px, -3px)
+	19%
+		transform: translate(-6px, 3px)
+	22%
+		transform: translate(5px, 2px)
+	25%
+		transform: translate(-5px, -3px)
+	28%
+		transform: translate(6px, -2px)
+	31%
+		transform: translate(-6px, 3px)
+	34%
+		transform: translate(5px, -3px)
+	37%
+		transform: translate(-5px, 2px)
+	40%
+		transform: translate(6px, 3px)
+	43%
+		transform: translate(-6px, -2px)
+	46%
+		transform: translate(5px, 2px)
+	49%
+		transform: translate(-5px, -3px)
+	52%
+		transform: translate(6px, -3px)
+	55%
+		transform: translate(-6px, 2px)
+	58%
+		transform: translate(5px, 3px)
+	61%
+		transform: translate(-5px, -2px)
+	64%
+		transform: translate(6px, 2px)
+	67%
+		transform: translate(-6px, -3px)
+	70%, 100%
+		transform: translate(0, 0)
+
+@keyframes bulgeEye
+	0%, 100%
+		transform: scale(1, 1)
+	8%
+		transform: scale(1.95, 2.05)
+	14%
+		transform: scale(1.65, 1.7)
+	20%, 70%
+		transform: scale(1.7, 1.75)
+	80%
+		transform: scale(0.85, 0.85)
+	88%
+		transform: scale(1.08, 1.08)
+	94%
+		transform: scale(1, 1)
+
+@keyframes bulgeSmile
+	0%, 6%, 82%, 100%
+		opacity: 1
+	9%, 78%
+		opacity: 0
+
+@keyframes bulgeOpen
+	0%, 6%
+		opacity: 0
+		transform: scale(0.3)
+	9%
+		opacity: 1
+		transform: scale(1.9, 2.3)
+	14%
+		transform: scale(1.7, 2)
+	20%, 70%
+		opacity: 1
+		transform: scale(1.8, 1.8)
+	78%
+		opacity: 1
+		transform: scale(0.5)
+	82%, 100%
+		opacity: 0
+		transform: scale(0.3)

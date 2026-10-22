@@ -1,0 +1,14 @@
+<script lang="ts">
+
+	interface Props {
+		size?: number,
+		color?: string
+	}
+
+	let { size=16, color="currentColor" }:Props = $props()
+
+</script>
+
+<svg width={size} height={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke={color} stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 3H18C19.6569 3 21 4.34315 21 6V18C21 19.6569 19.6569 21 18 21H6C4.34315 21 3 19.6569 3 18V6C3 4.34315 4.34315 3 6 3ZM9 3V21"/>
+</svg>

@@ -5,7 +5,6 @@
 	import { locales, localizeHref } from '$lib/paraglide/runtime.js';
 	import { modeScript } from '$lib/mode/mode.svelte';
 	import '@fractaldesign/fractalstyler/css'
-  import "../app.sass"
 	import "../app.css"
 	import '$lib/styles/index.sass'
   let { children } = $props()

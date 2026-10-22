@@ -6,9 +6,8 @@
 		step?: number;
 		defaultValue?: number;
 		label: string;
+		unit?: string;
 		displayFormatter?: (val: number) => string;
-		colorSwatch?: string;
-		onColorPick?: (color: string) => void;
 		size?: number;
 		onchange: (value: number) => void;
 	};
@@ -18,12 +17,11 @@
 		min = 0,
 		max = 1,
 		step = 0.01,
-		defaultValue = 0,
+		defaultValue = min,
 		label,
+		unit = '',
 		displayFormatter,
-		colorSwatch,
-		onColorPick,
-		size = 44,
+		size = 54,
 		onchange
 	}: Props = $props();
 
@@ -31,52 +29,67 @@
 	let isHovered = $state(false);
 	let startY = $state(0);
 	let startVal = $state(0);
-	let colorInputEl = $state<HTMLInputElement | null>(null);
 
 	const range = $derived(Math.max(0.00001, max - min));
 	const normalized = $derived(Math.max(0, Math.min(1, (value - min) / range)));
 
-	// 270-degree arc in 44x44 coordinate system
-	const R = 17;
-	const C = 2 * Math.PI * R; // ~106.814
-	const ARC_LENGTH = (270 / 360) * C; // ~80.11
+	// Arc geometry in 56x56 coordinate space
+	const CX = 28;
+	const CY = 28;
+	const R = 22;
+	const C = 2 * Math.PI * R; // ~138.23
+	const ARC_LENGTH = 0.75 * C; // 270 deg = ~103.67
 	const GAP_LENGTH = C - ARC_LENGTH;
 
-	const dashOffset = $derived(ARC_LENGTH * (1 - normalized));
+	// Fill length sweeps from 0 to ARC_LENGTH
+	const fillLength = $derived(Math.max(0.001, normalized * ARC_LENGTH));
+	// Needle rotation from -135deg (bottom-left) to +135deg (bottom-right)
 	const rotationDeg = $derived(-135 + normalized * 270);
 
 	const formattedText = $derived.by(() => {
 		if (displayFormatter) return displayFormatter(value);
 		if (step >= 1) return Math.round(value).toString();
 		if (step >= 0.1) return value.toFixed(1);
-		return value.toFixed(2);
+		if (step >= 0.01) return value.toFixed(2);
+		return value.toFixed(3);
 	});
+
+	const formatBound = (val: number) => {
+		if (Math.abs(val) >= 100) return Math.round(val).toString();
+		if (Math.abs(val) >= 10) return val.toFixed(1).replace(/\.0$/, '');
+		if (val === 0) return '0';
+		return val.toFixed(1).replace(/\.0$/, '');
+	};
 
 	function handlePointerDown(e: PointerEvent) {
 		isDragging = true;
 		startY = e.clientY;
 		startVal = value;
-		e.currentTarget?.setPointerCapture(e.pointerId);
+		const target = e.currentTarget as HTMLElement | null;
+		try {
+			target?.setPointerCapture(e.pointerId);
+		} catch {}
 	}
 
 	function handlePointerMove(e: PointerEvent) {
 		if (!isDragging) return;
 		const deltaY = startY - e.clientY;
-		const sensitivity = e.shiftKey ? 500 : 130;
+		const sensitivity = e.shiftKey ? 450 : 150;
 		const change = (deltaY / sensitivity) * range;
 		let newVal = startVal + change;
 		newVal = Math.round(newVal / step) * step;
 		newVal = Math.max(min, Math.min(max, newVal));
 		if (newVal !== value) {
-			onchange(newVal);
+			onchange(Number(newVal.toFixed(4)));
 		}
 	}
 
 	function handlePointerUp(e: PointerEvent) {
 		if (isDragging) {
 			isDragging = false;
+			const target = e.currentTarget as HTMLElement | null;
 			try {
-				e.currentTarget?.releasePointerCapture(e.pointerId);
+				target?.releasePointerCapture(e.pointerId);
 			} catch {}
 		}
 	}
@@ -84,59 +97,62 @@
 	function handleWheel(e: WheelEvent) {
 		e.preventDefault();
 		const dir = e.deltaY < 0 ? 1 : -1;
-		const delta = (e.shiftKey ? step : Math.max(step, range * 0.04)) * dir;
+		const delta = (e.shiftKey ? step : Math.max(step, range * 0.05)) * dir;
 		let newVal = value + delta;
 		newVal = Math.round(newVal / step) * step;
 		newVal = Math.max(min, Math.min(max, newVal));
 		if (newVal !== value) {
-			onchange(newVal);
+			onchange(Number(newVal.toFixed(4)));
+		}
+	}
+
+	function handleKeyDown(e: KeyboardEvent) {
+		if (e.key === 'ArrowUp' || e.key === 'ArrowRight') {
+			e.preventDefault();
+			const newVal = Math.min(max, value + (e.shiftKey ? step * 5 : step));
+			onchange(Number(newVal.toFixed(4)));
+		} else if (e.key === 'ArrowDown' || e.key === 'ArrowLeft') {
+			e.preventDefault();
+			const newVal = Math.max(min, value - (e.shiftKey ? step * 5 : step));
+			onchange(Number(newVal.toFixed(4)));
+		} else if (e.key === 'Home') {
+			e.preventDefault();
+			onchange(min);
+		} else if (e.key === 'End') {
+			e.preventDefault();
+			onchange(max);
 		}
 	}
 
 	function handleDblClick() {
-		if (onColorPick && colorInputEl) {
-			colorInputEl.click();
-		} else {
-			onchange(defaultValue);
-		}
+		onchange(defaultValue);
 	}
 </script>
 
 <div
 	role="presentation"
-	class="relative flex flex-col items-center select-none"
+	class="group relative flex flex-col items-center select-none p-2 rounded-xl transition-colors duration-150 hover:bg-white/[0.02]"
 	onmouseenter={() => (isHovered = true)}
 	onmouseleave={() => (isHovered = false)}
 >
-	<!-- Hidden native color input if onColorPick is enabled -->
-	{#if onColorPick}
-		<input
-			bind:this={colorInputEl}
-			type="color"
-			value={colorSwatch || '#4cb156'}
-			oninput={(e) => onColorPick?.(e.currentTarget.value)}
-			class="sr-only"
-		/>
-	{/if}
-
-	<!-- Floating Tooltip badge on hover or drag -->
-	{#if isHovered || isDragging}
-		<div
-			class="pointer-events-none absolute -top-9 z-50 flex items-center gap-1.5 whitespace-nowrap rounded-md bg-[#111315]/95 px-2.5 py-1 text-[11px] font-medium text-white shadow-xl ring-1 ring-white/15 animate-in fade-in duration-100"
-			style="border-bottom: 2px solid oklch(0.68 0.16 145.46);"
+	<!-- Top: Full Label -->
+	<div class="mb-1.5 flex w-full items-center justify-between gap-1 text-[11px] px-0.5">
+		<span class="truncate font-medium text-zinc-300" title={label}>
+			{label}
+		</span>
+		<button
+			type="button"
+			onclick={handleDblClick}
+			class="text-[9.5px] font-mono text-zinc-500 hover:text-emerald-400 transition cursor-pointer"
+			title="Double click to reset to default ({defaultValue})"
 		>
-			<span class="text-zinc-400">{label}:</span>
-			<span class="font-mono font-semibold text-[oklch(0.82_0.14_145.46)]">{formattedText}</span>
-			{#if colorSwatch}
-				<span
-					class="size-2.5 rounded-full inline-block shadow-sm"
-					style="background: {colorSwatch};"
-				></span>
-			{/if}
-		</div>
-	{/if}
+			<span class="font-mono font-semibold text-zinc-200 group-hover:text-emerald-400 transition-colors">
+				{formattedText}{unit}
+			</span>
+		</button>
+	</div>
 
-	<!-- Recess Slot matching screenshot -->
+	<!-- Center: Neumorphic Knob Dial & Arc -->
 	<div
 		role="slider"
 		tabindex="0"
@@ -149,99 +165,98 @@
 		onpointerup={handlePointerUp}
 		onpointercancel={handlePointerUp}
 		onwheel={handleWheel}
+		onkeydown={handleKeyDown}
 		ondblclick={handleDblClick}
-		class="relative grid place-items-center rounded-lg bg-[#141517]/90 p-1 transition-colors duration-150 hover:bg-[#1a1b1e] cursor-ns-resize touch-none focus:outline-none focus-visible:ring-1 focus-visible:ring-[oklch(0.68_0.16_145.46)] shadow-[inset_0_1px_3px_rgba(0,0,0,0.6)]"
+		class="relative flex items-center justify-center rounded-full cursor-ns-resize touch-none focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-500/50"
 		style="width: {size}px; height: {size}px;"
 	>
-		<!-- SVG Arc Track & Value Fill -->
+		<!-- SVG 270-degree arc track and value sweep -->
 		<svg
-			viewBox="0 0 44 44"
+			viewBox="0 0 56 56"
 			class="absolute inset-0 size-full pointer-events-none overflow-visible"
 		>
-			<defs>
-				<!-- Variation gradient of theme colors oklch(0.34163 0.10527 145.46) and oklch(0.31346 0.11005 127.73) -->
-				<linearGradient id="theme-knob-grad" x1="0%" y1="100%" x2="100%" y2="0%">
-					<stop offset="0%" stop-color="oklch(0.62 0.15 127.73)" />
-					<stop offset="50%" stop-color="oklch(0.68 0.16 145.46)" />
-					<stop offset="100%" stop-color="oklch(0.82 0.14 145.46)" />
-				</linearGradient>
-			</defs>
-
-			<!-- Background Track (270 deg) -->
+			<!-- Sunken groove shadow under the track -->
 			<circle
-				cx="22"
-				cy="22"
-				r="17"
+				cx={CX}
+				cy={CY}
+				r={R}
 				fill="none"
-				stroke="oklch(0.34163 0.10527 145.46 / 0.22)"
-				stroke-width="2.2"
+				stroke="#0e0f12"
+				stroke-width="5"
 				stroke-linecap="round"
 				stroke-dasharray="{ARC_LENGTH} {GAP_LENGTH}"
-				transform="rotate(135 22 22)"
+				transform="rotate(135 {CX} {CY})"
 			/>
 
-			<!-- Active Value Arc (sweeps with value) -->
+			<!-- Background Track ring -->
 			<circle
-				cx="22"
-				cy="22"
-				r="17"
+				cx={CX}
+				cy={CY}
+				r={R}
 				fill="none"
-				stroke={colorSwatch ? colorSwatch : "url(#theme-knob-grad)"}
-				stroke-width="2.6"
+				stroke="rgba(255, 255, 255, 0.08)"
+				stroke-width="3"
 				stroke-linecap="round"
-				stroke-dasharray="{ARC_LENGTH} {C}"
-				stroke-dashoffset={dashOffset}
-				transform="rotate(135 22 22)"
-				style="filter: drop-shadow(0 0 3px {colorSwatch ? colorSwatch : 'oklch(0.68 0.16 145.46 / 0.65)'});"
+				stroke-dasharray="{ARC_LENGTH} {GAP_LENGTH}"
+				transform="rotate(135 {CX} {CY})"
 			/>
+
+			<!-- Active Value Arc (Understated refined emerald) -->
+			{#if normalized > 0.005}
+				<circle
+					cx={CX}
+					cy={CY}
+					r={R}
+					fill="none"
+					stroke="#10b981"
+					stroke-width="3.2"
+					stroke-linecap="round"
+					stroke-dasharray="{fillLength} {C}"
+					stroke-dashoffset="0"
+					transform="rotate(135 {CX} {CY})"
+					style="filter: drop-shadow(0 0 2px rgba(16, 185, 129, 0.45));"
+				/>
+			{/if}
 		</svg>
 
-		<!-- Metallic Brushed Dial -->
+		<!-- Neumorphic Rotary Cap -->
 		<div
-			class="relative size-[28px] rounded-full shadow-[0_2px_5px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.48),inset_0_-1px_2px_rgba(0,0,0,0.9)] ring-1 ring-white/10 transition-transform duration-75 grid place-items-center"
+			class="relative flex items-center justify-center rounded-full transition-transform duration-75"
 			style="
-				background: conic-gradient(
-					from 0deg,
-					#46484e 0deg,
-					#858a94 45deg,
-					#303236 90deg,
-					#858a94 135deg,
-					#303236 180deg,
-					#858a94 225deg,
-					#303236 270deg,
-					#858a94 315deg,
-					#46484e 360deg
-				);
+				width: {size - 16}px;
+				height: {size - 16}px;
+				background: linear-gradient(145deg, #23252a, #16171a);
+				box-shadow:
+					3px 3px 6px rgba(0, 0, 0, 0.65),
+					-1.5px -1.5px 4px rgba(255, 255, 255, 0.04),
+					inset 0 1px 1px rgba(255, 255, 255, 0.1);
+				border: 1px solid rgba(255, 255, 255, 0.05);
 				transform: rotate({rotationDeg}deg);
 			"
 		>
-			<!-- Specular highlight overlay -->
+			<!-- Subtle center bevel recess -->
 			<div
-				class="absolute inset-0 rounded-full"
-				style="background: radial-gradient(circle at 45% 35%, rgba(255,255,255,0.22) 0%, transparent 60%);"
+				class="size-3 rounded-full opacity-40"
+				style="
+					background: radial-gradient(circle, #0e0f11 0%, #1c1d22 100%);
+					box-shadow: inset 1px 1px 2px rgba(0,0,0,0.8);
+				"
 			></div>
 
-			<!-- If color swatch is active, show jewel in center -->
-			{#if colorSwatch}
-				<div
-					class="size-2.5 rounded-full shadow-[0_0_5px_rgba(0,0,0,0.8)] border border-white/40"
-					style="background: {colorSwatch}; box-shadow: 0 0 6px {colorSwatch};"
-				></div>
-			{/if}
-
-			<!-- Indicator Notch/Dot in theme color -->
+			<!-- Tactile needle indicator line (understated emerald) -->
 			<div
-				class="absolute left-1/2 top-1 -translate-x-1/2 size-1.5 rounded-full"
+				class="absolute top-1 left-1/2 -translate-x-1/2 w-[2px] h-[5px] rounded-full"
 				style="
-					background: {colorSwatch ? colorSwatch : 'oklch(0.82 0.14 145.46)'};
-					box-shadow: 0 0 4px {colorSwatch ? colorSwatch : 'oklch(0.82 0.14 145.46)'};
+					background: #10b981;
+					box-shadow: 0 0 3px rgba(16, 185, 129, 0.6);
 				"
 			></div>
 		</div>
 	</div>
 
-	<!-- Tiny label below knob -->
-	<span class="mt-1 max-w-[46px] truncate text-center font-mono text-[9px] text-zinc-400 group-hover:text-zinc-200">
-		{label}
-	</span>
+	<!-- Bottom: Min & Max range bounds -->
+	<div class="mt-1 flex w-full items-center justify-between text-[9px] font-mono text-zinc-500 px-1">
+		<span>{formatBound(min)}</span>
+		<span>{formatBound(max)}</span>
+	</div>
 </div>

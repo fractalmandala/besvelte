@@ -1,6 +1,8 @@
 import type { AgentName } from "../types.js"
 import { claudeCode } from "./claudeCode.js"
 import { codex, gemini, opencode, shellAgent } from "./others.js"
+import { emgem } from "./emgem.js"
+import { fractalAiAgent } from "./fractalai.js"
 import type { AgentAdapter } from "./types.js"
 
 export type { AgentAdapter, TurnInput } from "./types.js"
@@ -11,6 +13,8 @@ export const AGENTS: Readonly<Record<AgentName, AgentAdapter>> = {
   gemini,
   opencode,
   shell: shellAgent,
+  emgem,
+  fractalai: fractalAiAgent,
 }
 
 export const AGENT_NAMES = Object.keys(AGENTS) as readonly AgentName[]

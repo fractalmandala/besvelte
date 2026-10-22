@@ -1,0 +1,44 @@
+// Jelly · 1.4s loop
+@use "./base"
+
+.bot-avatar[data-mood="jelly"]
+	.b-rig
+		animation: jellyBot 1.4s ease-in-out infinite
+	.b-face
+		animation: jellyFace 1.4s ease-in-out infinite
+
+@keyframes jellyBot
+	0%
+		transform: scale(1, 1) skewX(0deg)
+	10%
+		transform: scale(1.2, 0.82) skewX(-4deg)
+	22%
+		transform: scale(0.86, 1.16) skewX(3deg)
+	34%
+		transform: scale(1.1, 0.92) skewX(-2deg)
+	46%
+		transform: scale(0.95, 1.06) skewX(1deg)
+	58%
+		transform: scale(1.04, 0.97) skewX(0deg)
+	70%
+		transform: scale(0.99, 1.02) skewX(0deg)
+	82%, 100%
+		transform: scale(1, 1) skewX(0deg)
+
+@keyframes jellyFace
+	0%
+		transform: translate(0, 0)
+	10%
+		transform: translate(-34px, 14px)
+	22%
+		transform: translate(28px, -20px)
+	34%
+		transform: translate(-18px, 10px)
+	46%
+		transform: translate(11px, -7px)
+	58%
+		transform: translate(-6px, 3px)
+	70%
+		transform: translate(2px, -1px)
+	82%, 100%
+		transform: translate(0, 0)

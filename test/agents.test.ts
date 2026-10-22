@@ -6,7 +6,7 @@ const base = { prompt: "do it", autoApprove: false }
 
 describe("getAgent", () => {
   it("knows every agent and rejects others", () => {
-    expect(AGENT_NAMES).toEqual(["claude-code", "codex", "gemini", "opencode", "shell"])
+    expect(AGENT_NAMES).toEqual(["claude-code", "codex", "gemini", "opencode", "shell", "emgem"])
     expect(() => getAgent("hal")).toThrow(/Unknown agent/)
   })
 })

@@ -47,6 +47,7 @@
     "computer"
   ],
   "dependencies": {
+    "@fractaldesign/fractalai": "file:../../packages/fractalai",
     "ogl": "^1.0.11",
     "three": "^0.186.1",
     "zod": "^4.1.0"

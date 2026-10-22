@@ -1,0 +1,74 @@
+// Dizzy · 2.0s loop
+@use "./base"
+
+.bot-avatar[data-mood="dizzy"]
+	.b-rig
+		animation: dizzyBot 2s ease-in-out infinite
+	.b-eye-l
+		animation: dizzyEye 1s linear infinite
+	.b-eye-r
+		animation: dizzyEye 1s linear infinite reverse
+	.b-m-smile
+		opacity: 0
+	.b-m-flat
+		opacity: 1
+		animation: dizzyMouth 1s ease-in-out infinite
+	.b-star
+		opacity: 1
+		animation: orbit 1s linear infinite
+	.b-s2
+		animation-delay: -0.25s
+	.b-s3
+		animation-delay: -0.5s
+	.b-s4
+		animation-delay: -0.75s
+
+@keyframes dizzyBot
+	0%, 50%, 100%
+		transform: translate(0, 0) rotate(0deg)
+	25%
+		transform: translate(-24px, 0) rotate(-6deg)
+	75%
+		transform: translate(24px, 0) rotate(6deg)
+
+@keyframes dizzyEye
+	0%, 100%
+		transform: translate(26px, 0)
+	12.5%
+		transform: translate(18px, 18px)
+	25%
+		transform: translate(0, 26px)
+	37.5%
+		transform: translate(-18px, 18px)
+	50%
+		transform: translate(-26px, 0)
+	62.5%
+		transform: translate(-18px, -18px)
+	75%
+		transform: translate(0, -26px)
+	87.5%
+		transform: translate(18px, -18px)
+
+@keyframes dizzyMouth
+	0%, 100%
+		transform: rotate(-7deg) scale(1, 1)
+	50%
+		transform: rotate(7deg) scale(1.12, 1)
+
+@keyframes orbit
+	0%, 100%
+		transform: translate(270px, 0)
+	12.5%
+		transform: translate(191px, 34px)
+	25%
+		transform: translate(0, 48px)
+	37.5%
+		transform: translate(-191px, 34px)
+	50%
+		transform: translate(-270px, 0)
+	62.5%
+		transform: translate(-191px, -34px)
+	75%
+		transform: translate(0, -48px)
+	87.5%
+		transform: translate(191px, -34px)

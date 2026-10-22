@@ -6,6 +6,8 @@ export const AGENT_LABEL: Record<AgentName, string> = {
   gemini: "Gemini CLI",
   opencode: "OpenCode",
   shell: "Shell",
+  emgem: "Emgem",
+  fractalai: "Fractal AI",
 }
 
 export const STATUS_LABEL: Record<ThreadStatus, string> = {

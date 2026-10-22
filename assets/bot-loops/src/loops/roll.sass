@@ -1,0 +1,55 @@
+// Barrel roll · 1.2s loop
+@use "../base"
+
+.bot-avatar[data-mood="roll"]
+	.b-rig
+		transform-origin: 50% 55%
+		animation: rollBot 1.2s ease-in-out infinite
+	.b-eye
+		animation: rollEye 1.2s ease-in-out infinite
+	.b-m-smile
+		animation: rollSmile 1.2s ease-in-out infinite
+	.b-m-open
+		animation: rollOpen 1.2s ease-in-out infinite
+	.b-shadow
+		animation: hopShadow 1.2s ease-in-out infinite
+
+@keyframes rollBot
+	0%, 100%
+		transform: translateY(0) rotate(720deg) scale(1.06, 0.92)
+	14%
+		transform: translateY(-80px) rotate(0deg) scale(0.96, 1.06)
+	55%
+		transform: translateY(-230px) rotate(540deg) scale(1, 1)
+	80%
+		transform: translateY(-20px) rotate(720deg) scale(1, 1)
+	90%
+		transform: translateY(0) rotate(720deg) scale(1.1, 0.86)
+
+@keyframes rollEye
+	0%, 100%
+		transform: scaleY(1)
+	14%, 80%
+		transform: scaleY(0.45)
+	90%
+		transform: scaleY(1)
+
+@keyframes rollSmile
+	0%, 12%, 88%, 100%
+		opacity: 1
+	16%, 82%
+		opacity: 0
+
+@keyframes rollOpen
+	0%, 12%, 88%, 100%
+		opacity: 0
+	16%, 82%
+		opacity: 1
+
+@keyframes hopShadow
+	0%, 100%
+		transform: scale(1)
+		opacity: 0.14
+	45%
+		transform: scale(0.55)
+		opacity: 0.06

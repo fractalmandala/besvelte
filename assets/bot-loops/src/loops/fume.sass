@@ -1,0 +1,74 @@
+// Fuming · 1.2s loop
+@use "../base"
+
+.bot-avatar[data-mood="fume"]
+	.b-rig
+		animation: fumeBot 1.2s ease-in-out infinite
+	.b-rage
+		animation: rageFlush 1.2s ease-in-out infinite
+	.b-face
+		animation: shakeFace 0.1s linear infinite
+	.b-eye-l
+		animation: fumeEyeL 1.2s ease-in-out infinite
+	.b-eye-r
+		animation: fumeEyeR 1.2s ease-in-out infinite
+	.b-m-smile
+		animation: fumeMouth 1.2s ease-in-out infinite
+	.b-puff
+		animation: puffUp 1.2s linear infinite
+	.b-p2
+		animation-delay: -0.3s
+	.b-p3
+		animation-delay: -0.6s
+	.b-p4
+		animation-delay: -0.9s
+
+@keyframes fumeBot
+	0%, 100%
+		transform: scale(1, 1)
+	50%
+		transform: scale(1.06, 1.04)
+
+@keyframes rageFlush
+	0%, 100%
+		opacity: 0.15
+	50%
+		opacity: 0.9
+
+@keyframes shakeFace
+	0%, 100%
+		transform: translate(0, 0)
+	25%
+		transform: translate(-5px, 2px)
+	50%
+		transform: translate(5px, -2px)
+	75%
+		transform: translate(-4px, -2px)
+
+@keyframes fumeEyeL
+	0%, 100%
+		transform: rotate(14deg) scale(1.35, 0.5)
+	50%
+		transform: rotate(20deg) scale(1.5, 0.4)
+
+@keyframes fumeEyeR
+	0%, 100%
+		transform: rotate(-14deg) scale(1.35, 0.5)
+	50%
+		transform: rotate(-20deg) scale(1.5, 0.4)
+
+@keyframes fumeMouth
+	0%, 100%
+		transform: scale(1.1, -1)
+	50%
+		transform: scale(1.25, -1.25)
+
+@keyframes puffUp
+	0%
+		opacity: 0
+		transform: translate(0, 0) scale(0.5)
+	20%
+		opacity: 0.8
+	100%
+		opacity: 0
+		transform: translate(var(--px), -170px) scale(1.5)

@@ -12,7 +12,8 @@
 
   const MOTION: Partial<Record<GeckoIconName, string>> = { peek: "gicon-peek", idea: "gicon-glow" }
 
-  function delayFor(name: string): string {
+  function delayFor(name?: string): string {
+    if (!name) return "0s"
     const n = [...name].reduce((sum, ch) => sum + ch.charCodeAt(0), 0)
     return `${-((n % 17) / 17) * 3.8}s`
   }

@@ -8,6 +8,8 @@ import { serveStatic } from "./static.js"
 import { ScreenHub } from "../screenHub.js"
 import { dictationStatus, transcribe } from "./transcribe.js"
 import { ViewManager } from "./views.js"
+import { getMemorySystem } from "../memory/index.js"
+
 
 export interface ServerOptions {
   readonly port?: number
@@ -46,6 +48,10 @@ export async function startServer(options: ServerOptions = {}): Promise<RunningS
   const staticDir = options.staticDir ?? defaultStaticDir()
   const views = new ViewManager()
   const screens = options.screens ?? new ScreenHub()
+  const memory = getMemorySystem()
+  void memory.init().catch((err) => {
+    console.warn("[memory] background engine notice:", err.message)
+  })
   let port = 0
 
   const server = createServer((req, res) => {

@@ -11,6 +11,8 @@ export const TINT: Record<AgentName | "brand", { readonly from: string; readonly
   gemini: { from: "#93c5fd", to: "#2563eb", shade: "#1e40af" },
   opencode: { from: "#fde68a", to: "#f97316", shade: "#c2410c" },
   shell: { from: "#fbcfe8", to: "#ec4899", shade: "#be185d" },
+  emgem: { from: "#34d399", to: "#059669", shade: "#064e3b" },
+  fractalai: { from: "#38bdf8", to: "#6366f1", shade: "#4338ca" },
 }
 
 export const PALETTE = [

@@ -16,7 +16,7 @@ export type Computer =
   | (Shared & { readonly kind: ContainerRuntime; readonly container: string; readonly user?: string })
   | (Shared & { readonly kind: "cua"; readonly sandbox: string })
 
-export type AgentName = "claude-code" | "codex" | "gemini" | "opencode" | "shell"
+export type AgentName = "claude-code" | "codex" | "gemini" | "opencode" | "shell" | "emgem" | "fractalai"
 
 export type ThreadStatus = "starting" | "running" | "idle" | "failed" | "closed"
 
@@ -73,3 +73,7 @@ export interface TurnResult {
   readonly costUsd?: number
   readonly error?: string
 }
+
+export	interface BOT_MOODS  [
+		'jack', 'jelly', 'bulge', 'dizzy', 'melt', 'sneeze', 'roll', 'heart', 'fume', 'blep', 'glitch', 'pong'
+]	

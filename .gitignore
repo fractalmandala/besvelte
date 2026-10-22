@@ -5,3 +5,6 @@ coverage
 ui/node_modules
 ui/.svelte-kit
 ui/build
+models
+*.db
+

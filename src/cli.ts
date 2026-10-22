@@ -12,6 +12,8 @@ import {
   cmdStatus,
   cmdWait,
   cmdWorker,
+  cmdEmgem,
+  cmdFractalAi,
   type StartFlags,
 } from "./cli/commands.js"
 import { err, out } from "./cli/format.js"
@@ -71,6 +73,7 @@ async function main(argv: readonly string[]): Promise<number> {
       env: { type: "string", multiple: true, default: [] },
       wait: { type: "boolean", default: false },
       follow: { type: "boolean", short: "f", default: false },
+      session: { type: "string" },
       help: { type: "boolean", short: "h", default: false },
       port: { type: "string" },
       agents: { type: "string" },
@@ -148,6 +151,10 @@ async function main(argv: readonly string[]): Promise<number> {
       return cmdUi(values.port ? Number(values.port) : 4600, values.open)
     case "__worker":
       return cmdWorker(need(rest[0], "__worker <id>"))
+    case "emgem":
+      return cmdEmgem(need(rest.join(" "), "emgem <prompt>"), values.session ? String(values.session) : undefined)
+    case "fractalai":
+      return cmdFractalAi(need(rest.join(" "), "fractalai <prompt>"), values.session ? String(values.session) : undefined, values.model ? String(values.model) : undefined)
     default:
       throw new Error(`unknown command "${command}". Run openspaces --help`)
   }

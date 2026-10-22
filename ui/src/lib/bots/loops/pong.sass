@@ -1,0 +1,64 @@
+// Ping-pong · 1.6s loop
+@use "./base"
+
+.bot-avatar[data-mood="pong"]
+	.b-rig
+		animation: pongBot 1.6s linear infinite
+	.b-eyes
+		animation: pongEyes 1.6s ease-in-out infinite
+	.b-m-smile
+		animation: pongSmile 1.6s ease-in-out infinite
+	.b-m-open
+		animation: pongOpen 1.6s ease-in-out infinite
+	.b-shadow
+		animation: pongShadow 1.6s linear infinite
+
+@keyframes pongBot
+	0%, 100%
+		transform: translate(-190px, 0) rotate(0deg) scale(0.82, 1.12)
+		animation-timing-function: ease-out
+	25%
+		transform: translate(0, -140px) rotate(10deg) scale(1, 1.04)
+		animation-timing-function: ease-in
+	50%
+		transform: translate(190px, 0) rotate(0deg) scale(0.82, 1.12)
+		animation-timing-function: ease-out
+	75%
+		transform: translate(0, -140px) rotate(-10deg) scale(1, 1.04)
+		animation-timing-function: ease-in
+
+@keyframes pongEyes
+	0%, 100%
+		transform: translateX(-10px)
+	10%, 45%
+		transform: translateX(20px)
+	55%
+		transform: translateX(20px)
+	60%, 95%
+		transform: translateX(-20px)
+
+@keyframes pongSmile
+	0%, 6%, 50%, 56%
+		opacity: 0
+	10%, 48%, 60%, 100%
+		opacity: 1
+
+@keyframes pongOpen
+	0%, 6%, 50%, 56%
+		opacity: 1
+	10%, 48%, 60%, 100%
+		opacity: 0
+
+@keyframes pongShadow
+	0%, 100%
+		transform: translate(-190px, 0) scale(1)
+		opacity: 0.14
+	25%
+		transform: translate(0, 0) scale(0.7)
+		opacity: 0.07
+	50%
+		transform: translate(190px, 0) scale(1)
+		opacity: 0.14
+	75%
+		transform: translate(0, 0) scale(0.7)
+		opacity: 0.07

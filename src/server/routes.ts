@@ -12,6 +12,7 @@ import type { AgentName, ThreadState } from "../types.js"
 import { spawnWorker } from "../worker.js"
 import { HttpError } from "./http.js"
 import type { ViewManager } from "./views.js"
+import { getMemorySystem } from "../memory/index.js"
 
 export const VERSION = "0.1.0"
 
@@ -57,6 +58,20 @@ const fanoutBody = z.object({
 const viewBody = z.object({ on: text })
 const screenInputBody = z.object({ on: text })
 const sandboxBody = z.object({ name: text, agents: z.array(agentName).optional(), image: z.string().optional() })
+const memorySaveBody = z.object({
+  title: text,
+  content: z.string(),
+  type: z.string().optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
+  imageBase64: z.string().optional(),
+})
+const memorySearchBody = z.object({
+  query: text,
+  type: z.string().optional(),
+  limit: z.number().int().positive().optional(),
+  minScore: z.number().optional(),
+})
+
 
 type StartInput = Omit<z.infer<typeof startBody>, "keep"> & { readonly keep?: boolean }
 
@@ -221,6 +236,24 @@ export const ROUTES: readonly Route[] = [
     return { sandboxes: await listSandboxes() }
   }),
   post(`/api/sandboxes/${ID}/(start|stop)`, async ({ params }) => setSandboxRunning(params[0]!, params[1] === "start")),
+  get("/api/memory/status", async () => getMemorySystem().status()),
+  get("/api/memory/recent", async ({ query }) => {
+    const limit = query.get("limit") ? Number(query.get("limit")) : 20
+    const type = query.get("type") ?? undefined
+    return getMemorySystem().listRecent(limit, type)
+  }),
+  post("/api/memory/save", async ({ body }) => {
+    const input = parse(memorySaveBody, body)
+    return getMemorySystem().recordWork(input)
+  }),
+  post("/api/memory/search", async ({ body }) => {
+    const input = parse(memorySearchBody, body)
+    return getMemorySystem().search(input)
+  }),
+  route("DELETE", `/api/memory/(${ID})`, false, async ({ params }) => {
+    const deleted = getMemorySystem().delete(params[0]!)
+    return { ok: deleted }
+  }),
 ]
 
 export interface Match {

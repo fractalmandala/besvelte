@@ -1,0 +1,111 @@
+// Shared pieces of the bot avatar. Every loop file @use's this, so each loop compiles on its own.
+// Colours are custom properties on the root svg, so you can retheme the bot from outside.
+.bot-avatar
+	--bot-ink: #06110a
+	--bot-shadow: #1b3a23
+	--bot-muted: #526457
+	--bot-accent: #1c8f37
+
+.b-body
+	stroke: rgba(4, 44, 16, 0.55)
+	stroke-width: 3
+
+.b-ghost
+	opacity: 0
+
+.b-ghost-a
+	fill: #19f0ff
+
+.b-ghost-b
+	fill: #ff2fa8
+
+.b-rage
+	fill: #e8362f
+	opacity: 0
+
+.b-eye
+	fill: var(--bot-ink)
+	transform-box: fill-box
+	transform-origin: center
+
+.b-heart
+	fill: #ff3d6e
+	opacity: 0
+	transform-box: fill-box
+	transform-origin: center
+
+.b-hf
+	fill: #ff5c86
+	opacity: 0
+	transform-box: fill-box
+	transform-origin: center
+
+.b-tongue
+	fill: #ff7096
+	stroke: var(--bot-ink)
+	stroke-width: 10
+	stroke-linejoin: round
+	opacity: 0
+	transform-box: fill-box
+	transform-origin: 50% 0
+
+.b-m
+	transform-box: fill-box
+	transform-origin: center
+
+.b-m-smile, .b-m-flat
+	fill: none
+	stroke: var(--bot-ink)
+	stroke-width: 38
+	stroke-linecap: round
+
+.b-m-open
+	fill: var(--bot-ink)
+
+.b-m-open, .b-m-flat
+	opacity: 0
+
+.b-rig, .b-ghost, .b-rage
+	transform-box: fill-box
+	transform-origin: 50% 100%
+
+.b-ghost
+	transform-origin: center
+
+.b-shadow
+	fill: var(--bot-shadow)
+	opacity: 0.14
+	transform-box: fill-box
+	transform-origin: center
+
+.b-star
+	fill: #ffd23f
+	stroke: #c98f00
+	stroke-width: 4
+	stroke-linejoin: round
+	opacity: 0
+
+.b-puff
+	fill: var(--bot-muted)
+	opacity: 0
+	transform-box: fill-box
+	transform-origin: center
+
+.b-drop
+	fill: #7fd3ff
+	opacity: 0
+	transform-box: fill-box
+	transform-origin: center
+
+.b-achoo
+	fill: var(--bot-accent)
+	font-family: system-ui, sans-serif
+	font-weight: 700
+	opacity: 0
+	transform-box: fill-box
+	transform-origin: center
+
+// Remove this block if the avatar should animate regardless of the OS setting.
+@media (prefers-reduced-motion: reduce)
+	.bot-avatar *
+		animation: none !important

@@ -7,3 +7,6 @@ export { closeThread, openThread, startThread, Thread, threadStatus, type StartO
 export type { AgentEvent, AgentName, Computer, ThreadState, ThreadStatus, TurnRecord, TurnResult } from "./types.js"
 export { freePort, runView, viewPlan, type ViewOptions, type ViewPlan } from "./view.js"
 export { startServer, type RunningServer, type ServerOptions } from "./server/server.js"
+export { MemorySystem, getMemorySystem, type MemorySearchOptions, type RecordWorkOptions } from "./memory/index.js"
+export type { MemoryRecord, ScoredMemory } from "./memory/store.js"
+

@@ -6,6 +6,7 @@ export interface BackgroundSettings {
 	enabled: boolean;
 	activeId: string;
 	opacity: number;
+	sidebarOpacity?: number;
 	props: Record<string, Record<string, any>>;
 }
 
@@ -15,6 +16,7 @@ function loadSettings(): BackgroundSettings {
 			enabled: true,
 			activeId: DEFAULT_BACKGROUND_ID,
 			opacity: 0.25,
+			sidebarOpacity: 0.82,
 			props: {}
 		};
 	}
@@ -27,6 +29,7 @@ function loadSettings(): BackgroundSettings {
 				enabled: parsed.enabled ?? true,
 				activeId: BACKGROUND_REGISTRY[parsed.activeId] ? parsed.activeId : DEFAULT_BACKGROUND_ID,
 				opacity: typeof parsed.opacity === 'number' ? parsed.opacity : 0.25,
+				sidebarOpacity: typeof parsed.sidebarOpacity === 'number' ? parsed.sidebarOpacity : 0.82,
 				props: parsed.props ?? {}
 			};
 		}
@@ -36,6 +39,7 @@ function loadSettings(): BackgroundSettings {
 		enabled: true,
 		activeId: DEFAULT_BACKGROUND_ID,
 		opacity: 0.25,
+		sidebarOpacity: 0.82,
 		props: {}
 	};
 }
@@ -54,8 +58,10 @@ class BackgroundStore {
 	enabled = $state(true);
 	activeId = $state(DEFAULT_BACKGROUND_ID);
 	opacity = $state(0.25);
+	sidebarOpacity = $state(0.82);
 	props = $state<Record<string, Record<string, any>>>({});
 	isExpanded = $state(false);
+	isControllerOpen = $state(false);
 
 	constructor() {
 		if (typeof window !== 'undefined') {
@@ -63,6 +69,7 @@ class BackgroundStore {
 			this.enabled = saved.enabled;
 			this.activeId = saved.activeId;
 			this.opacity = saved.opacity;
+			this.sidebarOpacity = saved.sidebarOpacity ?? 0.82;
 			this.props = saved.props;
 		}
 	}
@@ -76,6 +83,7 @@ class BackgroundStore {
 					enabled: this.enabled,
 					activeId: this.activeId,
 					opacity: this.opacity,
+					sidebarOpacity: this.sidebarOpacity,
 					props: this.props
 				})
 			);
@@ -148,6 +156,11 @@ class BackgroundStore {
 		this.save();
 	}
 
+	setSidebarOpacity(val: number) {
+		this.sidebarOpacity = Math.max(0, Math.min(1, val));
+		this.save();
+	}
+
 	nextBackground() {
 		const list = Object.values(BACKGROUND_REGISTRY).sort((a, b) => a.name.localeCompare(b.name));
 		const idx = list.findIndex((b) => b.id === this.activeId);
@@ -169,6 +182,18 @@ class BackgroundStore {
 
 	toggleExpanded() {
 		this.isExpanded = !this.isExpanded;
+	}
+
+	toggleController() {
+		this.isControllerOpen = !this.isControllerOpen;
+	}
+
+	openController() {
+		this.isControllerOpen = true;
+	}
+
+	closeController() {
+		this.isControllerOpen = false;
 	}
 }
 

@@ -1,5 +1,26 @@
-export type AgentName = "claude-code" | "codex" | "gemini" | "opencode" | "shell"
+export type AgentName = "claude-code" | "codex" | "gemini" | "opencode" | "shell" | "emgem" | "fractalai"
 export type ThreadStatus = "starting" | "running" | "idle" | "failed" | "closed"
+
+export interface MemoryItem {
+  readonly id: string
+  readonly timestamp: number
+  readonly type: string
+  readonly title: string
+  readonly content: string
+  readonly metadata?: Record<string, unknown>
+  readonly hasImage: boolean
+  readonly score?: number
+}
+
+export interface MemoryStatus {
+  readonly running: boolean
+  readonly port?: number
+  readonly modelPath?: string
+  readonly mmprojPath?: string
+  readonly memoryCount: number
+  readonly types: Record<string, number>
+}
+
 
 export type ComputerKind = "local" | "ssh" | "container" | "docker" | "podman" | "cua"
 export interface Computer { readonly name: string; readonly address: string; readonly kind: ComputerKind }
@@ -142,4 +163,11 @@ export const api = {
   createSandbox: (name: string, agents: AgentName[]) => call<{ sandboxes: Sandbox[] }>("POST", "/sandboxes", { name, agents }),
   removeSandbox: (name: string) => call<{ sandboxes: Sandbox[] }>("DELETE", `/sandboxes/${enc(name)}`),
   setSandbox: (name: string, running: boolean) => call<Sandbox>("POST", `/sandboxes/${enc(name)}/${running ? "start" : "stop"}`),
+  memoryStatus: () => call<MemoryStatus>("GET", "/memory/status"),
+  memoryRecent: (limit = 20, type?: string) => call<MemoryItem[]>("GET", `/memory/recent?limit=${limit}${type ? `&type=${enc(type)}` : ""}`),
+  memorySave: (body: { title: string; content: string; type?: string; metadata?: Record<string, unknown>; imageBase64?: string }) =>
+    call<MemoryItem>("POST", "/memory/save", body),
+  memorySearch: (body: { query: string; type?: string; limit?: number; minScore?: number }) =>
+    call<MemoryItem[]>("POST", "/memory/search", body),
+  memoryDelete: (id: string) => call<{ ok: boolean }>("DELETE", `/memory/${enc(id)}`),
 }

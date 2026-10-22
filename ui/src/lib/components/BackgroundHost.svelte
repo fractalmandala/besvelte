@@ -1,31 +1,34 @@
 <script lang="ts">
 	import { onMount, type Component } from 'svelte';
+	import { fade } from 'svelte/transition';
 	import { bgState } from '$lib/bitbacks/store.svelte';
 
 	let containerEl = $state<HTMLDivElement | null>(null);
 	let currentComponent = $state<Component<any> | null>(null);
-	let currentId = $state<string>('');
-	let isLoading = $state(false);
+	let loadedId = $state<string>('');
 
 	$effect(() => {
 		const entry = bgState.activeEntry;
 		const id = entry.id;
-		if (id !== currentId) {
-			currentId = id;
-			isLoading = true;
-			entry
-				.loader()
-				.then((mod) => {
-					if (currentId === id) {
-						currentComponent = mod.default;
-						isLoading = false;
-					}
-				})
-				.catch((err) => {
+		let cancelled = false;
+
+		entry
+			.loader()
+			.then((mod) => {
+				if (!cancelled) {
+					currentComponent = mod.default;
+					loadedId = id;
+				}
+			})
+			.catch((err) => {
+				if (!cancelled) {
 					console.error(`[BackgroundHost] Failed to load background '${id}':`, err);
-					isLoading = false;
-				});
-		}
+				}
+			});
+
+		return () => {
+			cancelled = true;
+		};
 	});
 
 	const Active = $derived(currentComponent);
@@ -68,9 +71,11 @@
 		style="opacity: {bgState.opacity};"
 		aria-hidden="true"
 	>
-		{#if Active}
-			{#key currentId}
-				<Active {...activeProps} />
+		{#if Active && loadedId === bgState.activeId}
+			{#key loadedId}
+				<div class="size-full" in:fade={{ duration: 160 }}>
+					<Active {...activeProps} />
+				</div>
 			{/key}
 		{/if}
 	</div>
