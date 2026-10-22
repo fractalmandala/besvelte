@@ -74,6 +74,10 @@ export interface TurnResult {
   readonly error?: string
 }
 
-export	interface BOT_MOODS  [
-		'jack', 'jelly', 'bulge', 'dizzy', 'melt', 'sneeze', 'roll', 'heart', 'fume', 'blep', 'glitch', 'pong'
-]	
+export const BOT_MOODS = [
+  'jack', 'jelly', 'bulge', 'dizzy', 'melt', 'sneeze', 'roll', 'heart', 'fume', 'blep', 'glitch', 'pong'
+] as const
+
+export type BotMood = (typeof BOT_MOODS)[number]
+export type BOT_MOODS = typeof BOT_MOODS
+
