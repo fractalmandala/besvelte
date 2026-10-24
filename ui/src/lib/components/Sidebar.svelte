@@ -22,7 +22,7 @@
 	import BrainIcon from '$lib/iconsfill/brain.svelte'
 	import Liquid from '$lib/components/LiquidGlass.svelte'
   import Logo from "$lib/icons/besvelte-w.svelte"
-	import Botta1 from '$lib/components/SvelteBot.svelte'
+	import Botta1 from '$lib/assets/logotype.svelte'
 
 	let {
 		view,
@@ -96,12 +96,12 @@
 			{/if}
 		</button>
 		<!-- Emgem On-Call Bot Hero -->
-		<div class="bt pt-xl">
-			<p class="nav-header tt-u text-muted">Always On Call</p>
+		<div class="box gap-sm bt pt-xl">
+			<p class="text-sm tt-u text-muted">Bots</p>
 			<!-- svelte-ignore a11y_click_events_have_key_events -->
 			<!-- svelte-ignore a11y_no_static_element_interactions -->
-			<div class="row gap-sm ycenter" onclick={() => onChatEmgem?.()}>
-				<Botta1 mood="glitch" size="48"/>
+			<div class="pointer row gap-sm ycenter" onclick={() => onChatEmgem?.()}>
+				<img class="logomotif" src="/avatars/lime.png" alt="bot"/>
 				<p>Emgem</p>
 			</div>
 		</div>
