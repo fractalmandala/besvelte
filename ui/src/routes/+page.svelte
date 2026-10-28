@@ -8,12 +8,12 @@
   import Computers from "$lib/components/Computers.svelte"
   import Everywhere from "$lib/components/Everywhere.svelte"
   import MemoryStudio from "$lib/components/MemoryStudio.svelte"
-  import SettingsModal from "$lib/components/SettingsModal.svelte"
   import Logo from "$lib/icons/besvelte-w.svelte"
   import { bgState } from "$lib/bitbacks/store.svelte"
   import BackgroundHost from "$lib/components/BackgroundHost.svelte"
   import BackgroundController from "$lib/components/BackgroundController.svelte"
   import ShaderMenu from "$lib/components/ShaderMenu.svelte"
+  import SettingsModal from "$lib/components/SettingsModal.svelte"
 
   let token = $state<string | undefined>(readToken())
 
